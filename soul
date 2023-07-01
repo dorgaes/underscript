@@ -83,6 +83,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
         _G.usinghealitemname2 = 0
         _G.usehealitem = true
         _G.healthlost = 10
+        _G.lockboss = true
     --setting
         _G.webhookid = 0
         _G.webhook = true
@@ -413,6 +414,27 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                         if _G.autoclick == false then
                             mouse1click()
                         end
+                    end
+                end
+            end
+        end
+
+        function lockboss()
+            while _G.lockboss == true do
+                wait(0.01)
+                for  _, obj in pairs(workspace.ActiveBosses:GetDescendants()) do
+                    if obj.Name == _G.playername then
+                        _G.playingbossslot = obj.Parent.Parent
+                        for  _, obj in pairs(workspace.ActiveBosses[_G.playingbossslot]:GetDescendants()) do
+                            if obj.Name == "Head" then
+                                if obj.ClassName == "Part" then
+                                    if obj.Parent.Parent.Parent.Name == "Bosses" then
+                                        _G.playingbossname = obj.Parent
+                                    end
+                                end
+                            end
+                        end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, _G.playingbossname.Head.Position)
                     end
                 end
             end
@@ -1000,6 +1022,15 @@ MiscTab:AddToggle({
 		_G.code = Value
                 wait(3)
 		code()
+	end    
+})
+
+MiscTab:AddToggle({
+	Name = "Lock boss",
+	Default = false,
+	Callback = function(Value)
+		_G.lockboss = Value
+		lockboss()
 	end    
 })
 
