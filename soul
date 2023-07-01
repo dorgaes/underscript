@@ -434,7 +434,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                 end
                             end
                         end
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, _G.playingbossname.Head.Position)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, _G.playingbossname.Torso.Position)
                     end
                 end
             end
