@@ -81,6 +81,8 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
         _G.usingskilledname = 0
         _G.usinghealitemname1 = 0
         _G.usinghealitemname2 = 0
+        _G.usehealitem = true
+        _G.healthlost = 10
     --setting
         _G.webhookid = 0
         _G.webhook = true
@@ -502,7 +504,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                             keypress("0x3".._G.usingotherweapon2)
                             wait(_G.presstime)
                             if _G.usehealitem == true then
-                                if game.Players.LocalPlayer.Character.Humanoid.Health <= game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost then
+                                if game.Players.LocalPlayer.Character.Humanoid.Health <= (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost) then
                                     if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usinghealitemname1) then
                                         if game:GetService("Players").LocalPlayer.Backpack[_G.usinghealitemname1].Enabled == true then
                                             keypress("0x3".._G.usinghealitem1)
@@ -514,7 +516,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                 end
                             end
                             if _G.usehealitem == true then
-                                if game.Players.LocalPlayer.Character.Humanoid.Health <= game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost then
+                                if game.Players.LocalPlayer.Character.Humanoid.Health <= (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost) then
                                     if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usinghealitemname2) then
                                         if game:GetService("Players").LocalPlayer.Backpack[_G.usinghealitemname2].Enabled == true then
                                             keypress("0x3".._G.usinghealitem1)
@@ -1052,6 +1054,27 @@ MiscTab:AddSlider({
 	ValueName = "delay every press",
 	Callback = function(Value)
 		_G.presstime = Value
+	end    
+})
+
+MiscTab:AddToggle({
+	Name = "Use heal items",
+	Default = false,
+	Callback = function(Value)
+		_G.usehealitem = Value
+	end    
+})
+
+MiscTab:AddSlider({
+	Name = "Less than % to heal",
+	Min = 10,
+	Max = 90,
+	Default = 10,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 10,
+	ValueName = "Less than %",
+	Callback = function(Value)
+		_G.healthlost = (Value / 100)
 	end    
 })
 
