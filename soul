@@ -15,6 +15,10 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
         --other
             _G.playername = game.Players.LocalPlayer.Name
     --main
+        _G.mainworldbosses = 0
+        _G.otherworldbosses = 0
+        _G.codeworldbosses = 0
+        _G.repeatfarmboss = true
     --farm
         _G.autoReset = true
         _G.autoReset = true
@@ -658,6 +662,44 @@ local MainTab = Window:MakeTab({
 
 local Section = MainTab:AddSection({
 	Name = "Main"
+})
+
+MainTab:AddDropdown({
+	Name = "Main world bosses",
+	Default = "1",
+	Options = {"1", "2"},
+	Callback = function(Value)
+		_G.mainworldbosses = Value
+		mainworldbosses()
+	end    
+})
+
+MainTab:AddDropdown({
+	Name = "Other world bosses",
+	Default = "1",
+	Options = {"1", "2"},
+	Callback = function(Value)
+		_G.otherworldbosses = Value
+		otherworldbosses()
+	end    
+})
+
+MainTab:AddDropdown({
+	Name = "Code world bosses",
+	Default = "1",
+	Options = {"1", "2"},
+	Callback = function(Value)
+		_G.codeworldbosses = Value
+		codeworldbosses()
+	end    
+})
+
+MainTab:AddToggle({
+	Name = "Repeat farm",
+	Default = false,
+	Callback = function(Value)
+		_G.repeatfarmboss = Value
+	end    
 })
 --farm
 local FarmTab = Window:MakeTab({
