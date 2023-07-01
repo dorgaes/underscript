@@ -991,6 +991,8 @@ local Section = MiscTab:AddSection({
 	Name = "Misc"
 })
 
+MiscTab:AddLabel("Equip C.O.D.E before turn on Auto use CODE")
+
 MiscTab:AddToggle({
 	Name = "Auto use CODE",
 	Default = false,
@@ -1000,8 +1002,6 @@ MiscTab:AddToggle({
 		code()
 	end    
 })
-
-MiscTab:AddLabel("Equip C.O.D.E before turn on Auto use CODE")
 
 MiscTab:AddBind({
 	Name = "Auto Clicker",
@@ -1030,8 +1030,10 @@ MiscTab:AddSlider({
 	end    
 })
 
+MiscTab:AddLabel("Only work when you fighting")
+
 MiscTab:AddBind({
-	Name = "Auto Use Weapon",
+	Name = "Auto switch weapon",
 	Default = Enum.KeyCode.G,
 	Hold = false,
 	Callback = function()
