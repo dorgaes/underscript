@@ -470,7 +470,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                             if _G.autopress == false then break
                                             end
                                             if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.skillslot.Name) then
-                                                if game:GetService("Players").LocalPlayer.Backpack[_G.skillslot].Enabled == true then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.skillslot.Name].Enabled == true then
                                                     keypress("0x3".._G.skillslot.Hotbar.Value)
                                                     wait(_G.presstime)
                                                     if _G.autopress == false then break
@@ -478,7 +478,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                                 end
                                             end
                                             if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.skilledslot.Name) then
-                                                if game:GetService("Players").LocalPlayer.Backpack[_G.skilledslot].Enabled == true then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.skilledslot.Name].Enabled == true then
                                                     keypress("0x3".._G.skilledslot.Hotbar.Value)
                                                     wait(_G.presstime)
                                                     if _G.autopress == false then break
@@ -486,7 +486,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                                 end
                                             end
                                             if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.otherweaponslot1.Name) then
-                                                if game:GetService("Players").LocalPlayer.Backpack[_G.otherweaponslot1].Enabled == true then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.otherweaponslot1.Name].Enabled == true then
                                                     if _G.otherweaponslot1 ~= "Rift Essence" then
                                                         if _G.otherweaponslot1 ~= "C.O.D.E" then
                                                             if _G.otherweaponslot1 ~= "Mysterious Paper" then
@@ -504,7 +504,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                                 end
                                             end
                                             if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.otherweaponslot2.Name) then
-                                                if game:GetService("Players").LocalPlayer.Backpack[_G.otherweaponslot2].Enabled == true then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.otherweaponslot2.Name].Enabled == true then
                                                     if _G.otherweaponslot2 ~= "Rift Essence" then
                                                         if _G.otherweaponslot2 ~= "C.O.D.E" then
                                                             if _G.otherweaponslot2 ~= "Mysterious Paper" then
@@ -524,7 +524,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                             if _G.usehealitem == true then
                                                 if game.Players.LocalPlayer.Character.Humanoid.Health < _G.healthlost2 then
                                                     if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.healitemslot1.Name) then
-                                                        if game:GetService("Players").LocalPlayer.Backpack[_G.healitemslot1].Enabled == true then
+                                                        if game:GetService("Players").LocalPlayer.Backpack[_G.healitemslot1.Name].Enabled == true then
                                                             keypress("0x3".._G.healitemslot1.Hotbar.Value)
                                                             wait(_G.presstime)
                                                             if _G.autopress == false then break
@@ -536,7 +536,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                             if _G.usehealitem == true then
                                                 if game.Players.LocalPlayer.Character.Humanoid.Health < _G.healthlost2 then
                                                     if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.healitemslot2.Name) then
-                                                        if game:GetService("Players").LocalPlayer.Backpack[_G.healitemslot2].Enabled == true then
+                                                        if game:GetService("Players").LocalPlayer.Backpack[_G.healitemslot2.Name].Enabled == true then
                                                             keypress("0x3".._G.healitemslot2.Hotbar.Value)
                                                             wait(_G.presstime)
                                                             if _G.autopress == false then break
@@ -1088,7 +1088,6 @@ MiscTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.code = Value
-                wait(3)
 		code()
 	end    
 })
