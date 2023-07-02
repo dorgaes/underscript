@@ -765,8 +765,8 @@ MainTab:AddDropdown({
 	end    
 })
 
-Tab:AddButton({
-	Name = "Star farm",
+MainTab:AddButton({
+	Name = "Farm",
 	Callback = function()
       		mainworldbosses()
 		otherworldbosses()
