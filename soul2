@@ -1168,11 +1168,10 @@ MiscTab:AddSlider({
 
 MiscTab:AddLabel("Only work when you fighting")
 
-MiscTab:AddBind({
+MiscTab:AddToggle({
 	Name = "Auto switch weapon",
-	Default = Enum.KeyCode.G,
-	Hold = false,
-	Callback = function()
+	Default = false,
+	Callback = function(Value)
 		if _G.autopress == true then 
         _G.autopress = false
     elseif _G.autopress == false then 
