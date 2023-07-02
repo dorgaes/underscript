@@ -79,7 +79,8 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
         _G.usinghealitemname1 = 0
         _G.usinghealitemname2 = 0
         _G.usehealitem = true
-        _G.healthlost = 10
+        _G.healthlost1 = 10
+        _G.healthlost2 = (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost1)
         _G.lockboss = true
     --setting
         _G.webhookid = 0
@@ -561,12 +562,12 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                             repeat
                                                 if _G.autopress == false then break
                                                 end
-                                                keypress("0x3".._G.usingotherweapon1)
+                                                keypress("0x3".._G.usingweapon1)
                                                 wait(_G.presstime)
-                                                keypress("0x3".._G.usingotherweapon2)
+                                                keypress("0x3".._G.usingweapon2)
                                                 wait(_G.presstime)
                                                 if _G.usehealitem == true then
-                                                    if game.Players.LocalPlayer.Character.Humanoid.Health <= (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost) then
+                                                    if game.Players.LocalPlayer.Character.Humanoid.Health < healthlost2 then
                                                         if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usinghealitemname1) then
                                                             if game:GetService("Players").LocalPlayer.Backpack[_G.usinghealitemname1].Enabled == true then
                                                                 keypress("0x3".._G.usinghealitem1)
@@ -578,7 +579,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                                     end
                                                 end
                                                 if _G.usehealitem == true then
-                                                    if game.Players.LocalPlayer.Character.Humanoid.Health <= (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost) then
+                                                    if game.Players.LocalPlayer.Character.Humanoid.Health < healthlost2 then
                                                         if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usinghealitemname2) then
                                                             if game:GetService("Players").LocalPlayer.Backpack[_G.usinghealitemname2].Enabled == true then
                                                                 keypress("0x3".._G.usinghealitem1)
@@ -621,7 +622,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                                             if _G.usingotherweaponname2 ~= "C.O.D.E" then
                                                                if _G.usingotherweaponname2 ~= "Mysterious Paper" then
                                                                     if _G.usingotherweaponname2 ~= "KeyGen" then
-                                                                        keypress("0x3".._G.usingotherweapon1)
+                                                                        keypress("0x3".._G.usingotherweapon2)
                                                                         wait(_G.presstime)
                                                                     end
                                                                 end
@@ -1209,9 +1210,10 @@ MiscTab:AddSlider({
 	Default = 10,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 10,
-	ValueName = "Less than %",
+	ValueName = "% to heal",
 	Callback = function(Value)
-		_G.healthlost = (Value / 100)
+		_G.healthlost1 = (Value / 100)
+		_G.healthlost2 = (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost1)
 	end    
 })
 
