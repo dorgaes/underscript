@@ -55,31 +55,17 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
         _G.autopress = true
         _G.presstime = 0.3
         _G.codehotbar = 0
-        _G.healitem = 0
-        _G.skill = 0
-        _G.skilled = 0
-        _G.weapon = 0
-        _G.otherweapon = 0
-        _G.usingtoolhotbar = 0
-        _G.usingweapon1 = 0
-        _G.usingweapon2 = 0
-        _G.usingotherweapon1 = 0
-        _G.usingotherweapon2 = 0
-        _G.usingskill = 0
-        _G.usingskilled = 0
-        _G.usinghealitem1 = 0
-        _G.usinghealitem2 = 0
-        _G.healthlost = 0
-        _G.usingweaponname1 = 0
-        _G.usingweaponname2 = 0
-        _G.usingotherweaponname1 = 0
-        _G.usingotherweaponname2 = 0
-        _G.usingskillname = 0
-        _G.usingskilledname = 0
-        _G.usinghealitemname1 = 0
-        _G.usinghealitemname2 = 0
+        _G.healitemslot1 = 0
+        _G.healitemslot2 = 0
+        _G.skillslot = 0
+        _G.skilledslot = 0
+        _G.weaponslot1 = 0
+        _G.weaponslot2 = 0
+        _G.otherweaponslot1 = 0
+        _G.otherweaponslot2 = 0
         _G.usehealitem = true
-        _G.healthlost = 10
+        _G.healthlost1 = 10
+        _G.healthlost2 = (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost1)
         _G.lockboss = true
     --setting
         _G.webhookid = 0
@@ -385,20 +371,25 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
             end
         end
     --misc
-        function finditemname()
-            for _, obj in pairs(game:GetService("Players").LocalPlayer.ToolFolder:GetChildren()) do
+        function findusingweapon()
+            for _, obj in pairs(game:GetService("Players").LocalPlayer.StarterGear:GetChildren()) do
                 if obj:FindFirstChild("HealScript") then
                     if obj.HealScript:FindFirstChild("HealEffect") then
                         if obj.Name ~= "Rift Essence" then
-                            _G.healitem = obj.Name
+                            if obj.Slot.Value == 1 then
+                                _G.healitemslot1 = obj
+                            end
+                            if obj.Slot.Value == 2 then
+                                _G.healitemslot2 = obj
+                            end
                         end
                     end
                 end
                 if obj:FindFirstChild("SkillValue") then
-                    _G.skill = obj.Name
+                    _G.skillslot = obj
                 end
                 if obj:FindFirstChild("SkilledValue") then
-                    _G.skilled = obj.Name
+                    _G.skilledslot = obj
                 end
                 if obj.Name ~= "Rift Essence" then
                     if obj.Name ~= "C.O.D.E" then
@@ -415,7 +406,12 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                                                 if obj.Name ~= _G.healitem then
                                                                     if obj.Name ~= _G.skill then
                                                                         if obj.Name ~= _G.skilled then
-                                                                            _G.weapon = obj.Name
+                                                                            if obj.Slot.Value == 1 then
+                                                                                _G.weaponslot1 = obj
+                                                                            end
+                                                                            if obj.Slot.Value == 2 then
+                                                                                _G.weaponslot2 = obj
+                                                                            end
                                                                         end
                                                                     end
                                                                 end
@@ -431,11 +427,127 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                         end
                     end
                 end
-                if obj.Name ~= _G.healitem then
-                    if obj.Name ~= _G.skill then
-                        if obj.Name ~= _G.skilled then
-                            if obj.Name ~= _G.weapon then
-                                _G.otherweapon = obj.Name
+                if obj.Name ~= _G.healitemslot1 then
+                    if obj.Name ~= _G.healitemslot1 then
+                        if obj.Name ~= _G.skillslot then
+                            if obj.Name ~= _G.skilledslot then
+                                if obj.Name ~= _G.weaponslot1 then
+                                    if obj.Name ~= _G.weaponslot2 then
+                                        if obj.Slot.Value == 1 then
+                                            _G.otherweaponslot1 = obj
+                                        end
+                                        if obj.Slot.Value == 2 then
+                                            _G.otherweaponslot2 = obj
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        function autopress()
+            while _G.autopress == true do
+                wait(0.0001)
+                for _, obj in pairs(workspace.ActiveBosses:GetDescendants()) do
+                    if obj.Name == _G.playername then
+                        _G.playingbossslot = obj.Parent.Parent
+                        for _, obj in pairs(_G.playingbossslot.Bosses["1"]:GetDescendants()) do
+                            if obj.Name == "Head" then
+                                if obj.ClassName == "Part" then
+                                    if obj.Parent.Parent.Parent.Name == "Bosses" then
+                                        _G.playingbossname = obj.Parent
+                                        findusingweapon()
+                                        repeat
+                                            keypress("0x3".._G.weaponslot1.Hotbar.Value)
+                                            wait(_G.presstime)
+                                            if _G.autopress == false then break
+                                            end
+                                            keypress("0x3".._G.weaponslot2.Hotbar.Value)
+                                            wait(_G.presstime)
+                                            if _G.autopress == false then break
+                                            end
+                                            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.skillslot.Name) then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.skillslot.Name].Enabled == true then
+                                                    keypress("0x3".._G.skillslot.Hotbar.Value)
+                                                    wait(_G.presstime)
+                                                    if _G.autopress == false then break
+                                                    end
+                                                end
+                                            end
+                                            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.skilledslot.Name) then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.skilledslot.Name].Enabled == true then
+                                                    keypress("0x3".._G.skilledslot.Hotbar.Value)
+                                                    wait(_G.presstime)
+                                                    if _G.autopress == false then break
+                                                    end
+                                                end
+                                            end
+                                            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.otherweaponslot1.Name) then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.otherweaponslot1.Name].Enabled == true then
+                                                    if _G.otherweaponslot1 ~= "Rift Essence" then
+                                                        if _G.otherweaponslot1 ~= "C.O.D.E" then
+                                                            if _G.otherweaponslot1 ~= "Mysterious Paper" then
+                                                                if _G.otherweaponslot1 ~= "KeyGen" then
+                                                                    if _G.otherweaponslot1 ~= "EPICNESS" then
+                                                                        keypress("0x3".._G.otherweaponslot1.Hotbar.Value)
+                                                                        wait(_G.presstime)
+                                                                        if _G.autopress == false then break
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.otherweaponslot2.Name) then
+                                                if game:GetService("Players").LocalPlayer.Backpack[_G.otherweaponslot2.Name].Enabled == true then
+                                                    if _G.otherweaponslot2 ~= "Rift Essence" then
+                                                        if _G.otherweaponslot2 ~= "C.O.D.E" then
+                                                            if _G.otherweaponslot2 ~= "Mysterious Paper" then
+                                                                if _G.otherweaponslot2 ~= "KeyGen" then
+                                                                    if _G.otherweaponslot2 ~= "EPICNESS" then
+                                                                        keypress("0x3".._G.otherweaponslot2.Hotbar.Value)
+                                                                        wait(_G.presstime)
+                                                                        if _G.autopress == false then break
+                                                                        end
+                                                                    end
+                                                                end
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            if _G.usehealitem == true then
+                                                if game.Players.LocalPlayer.Character.Humanoid.Health < _G.healthlost2 then
+                                                    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.healitemslot1.Name) then
+                                                        if game:GetService("Players").LocalPlayer.Backpack[_G.healitemslot1.Name].Enabled == true then
+                                                            keypress("0x3".._G.healitemslot1.Hotbar.Value)
+                                                            wait(_G.presstime)
+                                                            if _G.autopress == false then break
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                            if _G.usehealitem == true then
+                                                if game.Players.LocalPlayer.Character.Humanoid.Health < _G.healthlost2 then
+                                                    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.healitemslot2.Name) then
+                                                        if game:GetService("Players").LocalPlayer.Backpack[_G.healitemslot2.Name].Enabled == true then
+                                                            keypress("0x3".._G.healitemslot2.Hotbar.Value)
+                                                            wait(_G.presstime)
+                                                            if _G.autopress == false then break
+                                                            end
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                        until _G.playingbossname.Enemy.Health == 0
+                                    end
+                                end
                             end
                         end
                     end
@@ -489,154 +601,6 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
             while _G.autoclick == true do
                 wait(_G.clcktime)
                 mouse1click()
-            end
-        end
-
-        function autopress()
-            finditemname()
-            while _G.autopress == true do
-                wait(0.01)
-                for  _, obj in pairs(workspace.ActiveBosses:GetDescendants()) do
-                    if obj.Name == _G.playername then
-                        _G.playingbossslot = obj.Parent.Parent
-                        for  _, obj in pairs(_G.playingbossslot:GetDescendants()) do
-                            if obj.Name == "Head" then
-                                if obj.ClassName == "Part" then
-                                    if obj.Parent.Parent.Parent.Name == "Bosses" then
-                                        _G.playingbossname = obj.Parent
-                                        for _, obj in pairs(workspace.CharacterHolder[_G.playername]:GetChildren()) do
-                                            if obj.ClassName == Tool then
-                                                _G.usingtoolhotbar = obj.Hotbar.Value
-                                                keypress("0x3".._G.usingtoolhotbar)
-                                            end
-                                        end
-                                        wait(0.1)
-                                        for _, obj in pairs(game:GetService("Players").LocalPlayer.StarterGear:GetChildren()) do
-                                            if obj.Name == _G.weapon then
-                                                if obj.Slot.Value == 1 then
-                                                    _G.usingweaponname1 = obj.Name
-                                                    _G.usingweapon1 = obj.Hotbar.Value
-                                                end
-                                                if obj.Slot.Value == 2 then
-                                                    _G.usingweaponname2 = obj.Name
-                                                    _G.usingweapon2 = obj.Hotbar.Value
-                                                end
-                                            end
-                                            if obj.Name == _G.otherweapon then
-                                                if obj.Slot.Value == 1 then
-                                                    _G.usingotherweaponname1 = obj.Name
-                                                    _G.usingotherweapon1 = obj.Hotbar.Value
-                                                end
-                                                if obj.Slot.Value == 2 then
-                                                    _G.usingotherweaponname2 = obj.Name
-                                                    _G.usingotherweapon2 = obj.Hotbar.Value
-                                                end
-                                            end
-                                            if obj.Name == _G.skill then
-                                                _G.usingskillname = obj.Name
-                                                if obj.Slot.Value == 1 then
-                                                    _G.usingskill = obj.Hotbar.Value
-                                                elseif obj.Slot.Value == 2 then
-                                                    _G.usingskill = obj.Hotbar.Value
-                                                end
-                                            end
-                                            if obj.Name == _G.skilled then
-                                                _G.usingskilledname = obj.Name
-                                                if obj.Slot.Value == 1 then
-                                                    _G.usingskilled = obj.Hotbar.Value
-                                                elseif obj.Slot.Value == 2 then
-                                                    _G.usingskilled = obj.Hotbar.Value
-                                                end
-                                            end
-                                            if obj.Name == _G.healitem then
-                                                if obj.Slot.Value == 1 then
-                                                    _G.usinghealitemname1 = obj.Name
-                                                    _G.usinghealitem1 = obj.Hotbar.Value
-                                                end
-                                               if obj.Slot.Value == 2 then
-                                                    _G.usinghealitemname2 = obj.Name
-                                                    _G.usinghealitem2 = obj.Hotbar.Value
-                                                end
-                                            end
-                                            repeat
-                                                if _G.autopress == false then break
-                                                end
-                                                keypress("0x3".._G.usingotherweapon1)
-                                                wait(_G.presstime)
-                                                keypress("0x3".._G.usingotherweapon2)
-                                                wait(_G.presstime)
-                                                if _G.usehealitem == true then
-                                                    if game.Players.LocalPlayer.Character.Humanoid.Health <= (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost) then
-                                                        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usinghealitemname1) then
-                                                            if game:GetService("Players").LocalPlayer.Backpack[_G.usinghealitemname1].Enabled == true then
-                                                                keypress("0x3".._G.usinghealitem1)
-                                                                wait(0.1)
-                                                                mouse1click()
-                                                                wait(_G.presstime)
-                                                            end
-                                                        end
-                                                    end
-                                                end
-                                                if _G.usehealitem == true then
-                                                    if game.Players.LocalPlayer.Character.Humanoid.Health <= (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost) then
-                                                        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usinghealitemname2) then
-                                                            if game:GetService("Players").LocalPlayer.Backpack[_G.usinghealitemname2].Enabled == true then
-                                                                keypress("0x3".._G.usinghealitem1)
-                                                                wait(0.1)
-                                                                mouse1click()
-                                                                wait(_G.presstime)
-                                                            end
-                                                        end
-                                                    end
-                                                end
-                                                if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usingskillname) then
-                                                    if game:GetService("Players").LocalPlayer.Backpack[_G.usingskillname].Enabled == true then
-                                                        keypress("0x3".._G.usingskill)
-                                                        wait(_G.presstime)
-                                                    end
-                                                end
-                                                if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usingskilledname) then
-                                                   if game:GetService("Players").LocalPlayer.Backpack[_G.usingskilledname].Enabled == true then
-                                                        keypress("0x3".._G.usingskilled)
-                                                        wait(_G.presstime)
-                                                    end
-                                                end    
-                                                if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usingotherweaponname1) then
-                                                    if game:GetService("Players").LocalPlayer.Backpack[_G.usingotherweaponname1].Enabled == true then
-                                                        if _G.usingotherweaponname1 ~= "Rift Essence" then
-                                                            if _G.usingotherweaponname1 ~= "C.O.D.E" then
-                                                                if _G.usingotherweaponname1 ~= "Mysterious Paper" then
-                                                                    if _G.usingotherweaponname1 ~= "KeyGen" then
-                                                                        keypress("0x3".._G.usingotherweapon1)
-                                                                        wait(_G.presstime)
-                                                                    end
-                                                                end
-                                                            end
-                                                        end
-                                                    end
-                                                end
-                                                if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(_G.usingotherweaponname2) then
-                                                    if game:GetService("Players").LocalPlayer.Backpack[_G.usingotherweaponname2].Enabled == true then
-                                                        if _G.usingotherweaponname2 ~= "Rift Essence" then
-                                                            if _G.usingotherweaponname2 ~= "C.O.D.E" then
-                                                               if _G.usingotherweaponname2 ~= "Mysterious Paper" then
-                                                                    if _G.usingotherweaponname2 ~= "KeyGen" then
-                                                                        keypress("0x3".._G.usingotherweapon1)
-                                                                        wait(_G.presstime)
-                                                                    end
-                                                                end
-                                                            end
-                                                        end
-                                                    end
-                                                end
-                                            until _G.playingbossname.Enemy.Health == 0
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
             end
         end
     --setting
@@ -1124,7 +1088,6 @@ MiscTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.code = Value
-                wait(3)
 		code()
 	end    
 })
@@ -1167,11 +1130,10 @@ MiscTab:AddSlider({
 
 MiscTab:AddLabel("Only work when you fighting")
 
-MiscTab:AddBind({
+MiscTab:AddToggle({
 	Name = "Auto switch weapon",
-	Default = Enum.KeyCode.G,
-	Hold = false,
-	Callback = function()
+	Default = false,
+	Callback = function(Value)
 		if _G.autopress == true then 
         _G.autopress = false
     elseif _G.autopress == false then 
@@ -1209,9 +1171,10 @@ MiscTab:AddSlider({
 	Default = 10,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 10,
-	ValueName = "Less than %",
+	ValueName = "% to heal",
 	Callback = function(Value)
-		_G.healthlost = (Value / 100)
+		_G.healthlost1 = (Value / 100)
+		_G.healthlost2 = (game.Players.LocalPlayer.Character.Humanoid.MaxHealth * _G.healthlost1)
 	end    
 })
 
