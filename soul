@@ -22,13 +22,6 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
         _G.repeatfarmboss = true
         _G.farmingboss = "None"
     --farm
-        _G.autoReset = true
-        _G.autoReset = true
-        _G.truereset = true
-        _G.autoLv = true
-        _G.otherboss = true
-        _G.autoTPKromerHard = true
-        _G.autoTPKromererror404 = true
         _G.autodt = true
         _G.dtgold = true
         _G.dttp = true
@@ -167,6 +160,8 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
             end
         end
     --farm
+        function autodt()
+        end
     --local
         function mainworldlocal()
             if _G.mainworldlocal == "Lobby" then
@@ -799,75 +794,32 @@ local Section = FarmTab:AddSection({
 })
 
 FarmTab:AddToggle({
-	Name = "Enable Reset",
+	Name = "Auto reset",
 	Default = false,
 	Callback = function(Value)
-	_G.autoReset = Value	
+		print(Value)
 	end    
 })
 
 FarmTab:AddToggle({
-	Name = "Auto True Reset",
+	Name = "Farm Lv",
 	Default = false,
 	Callback = function(Value)
-	_G.truereset = Value
+		print(Value)
 	end    
 })
 
-FarmTab:AddLabel("Turn on Enable Reset and Lv Farm to auto farm reset")
-
-FarmTab:AddToggle({
-	Name = "Lv Farm",
-	Default = false,
-	Callback = function(Value)
-        _G.autoLv = Value
-        autoLv()
-    end
+local Section = FarmTab:AddSection({
+	Name = "Obby"
 })
 
-FarmTab:AddToggle({
-	Name = "TP Farm",
-	Default = false,
+Tab:AddDropdown({
+	Name = "Obby Farm",
+	Default = "None",
+	Options = {"Hotland(lv 1+)", "Snowdin(lv 3+)", "Core(lv 20+)"},
 	Callback = function(Value)
-        _G.otherboss = Value
-        autoTP()
-    end
-})
-
-FarmTab:AddToggle({
-	Name = "Kromer Farm",
-	Default = false,
-	Callback = function(Value)
-        _G.otherboss = Value
-        autoKromer()
-    end
-})
-
-FarmTab:AddToggle({
-	Name = "TP and Kromer Farm",
-	Default = false,
-	Callback = function(Value)
-        _G.autoTPKromerHard = Value
-        autoTPKromerHard()
-    end
-})
-
-FarmTab:AddToggle({
-	Name = "TP and Kromer Farm(Error404)",
-	Default = false,
-	Callback = function(Value)
-        _G.autoTPKromererror404 = Value
-        autoTPKromererror404()
-    end
-})
-
-FarmTab:AddToggle({
-	Name = "Epic sans Farm",
-	Default = false,
-	Callback = function(Value)
-        _G.otherboss = Value
-        autoepicsans()
-    end
+		print(Value)
+	end    
 })
 
 local Section = FarmTab:AddSection({
