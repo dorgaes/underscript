@@ -470,7 +470,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                 for  _, obj in pairs(workspace.ActiveBosses:GetDescendants()) do
                     if obj.Name == _G.playername then
                         _G.playingbossslot = obj.Parent.Parent
-                        for  _, obj in pairs(workspace.ActiveBosses[_G.playingbossslot]:GetDescendants()) do
+                        for  _, obj in pairs(_G.playingbossslot:GetDescendants()) do
                             if obj.Name == "Head" then
                                 if obj.ClassName == "Part" then
                                     if obj.Parent.Parent.Parent.Name == "Bosses" then
@@ -499,7 +499,7 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                 for  _, obj in pairs(workspace.ActiveBosses:GetDescendants()) do
                     if obj.Name == _G.playername then
                         _G.playingbossslot = obj.Parent.Parent
-                        for  _, obj in pairs(workspace.ActiveBosses[_G.playingbossslot]:GetDescendants()) do
+                        for  _, obj in pairs(_G.playingbossslot:GetDescendants()) do
                             if obj.Name == "Head" then
                                 if obj.ClassName == "Part" then
                                     if obj.Parent.Parent.Parent.Name == "Bosses" then
@@ -813,7 +813,7 @@ local Section = FarmTab:AddSection({
 	Name = "Obby"
 })
 
-Tab:AddDropdown({
+FarmTab:AddDropdown({
 	Name = "Obby Farm",
 	Default = "None",
 	Options = {"Hotland(lv 1+)", "Snowdin(lv 3+)", "Core(lv 20+)"},
