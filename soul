@@ -545,6 +545,8 @@ local Window = OrionLib:MakeWindow({Name = "Dorgaes Hub", HidePremium = false, S
                                                     end
                                                 end
                                             end
+                                            if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then break
+                                            end
                                         until _G.playingbossname.Enemy.Health == 0
                                     end
                                 end
