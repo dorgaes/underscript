@@ -813,7 +813,7 @@ local Section = FarmTab:AddSection({
 	Name = "Obby"
 })
 
-Tab:AddDropdown({
+FarmTab:AddDropdown({
 	Name = "Obby Farm",
 	Default = "None",
 	Options = {"Hotland(lv 1+)", "Snowdin(lv 3+)", "Core(lv 20+)"},
